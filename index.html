@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SummitPulse Outdoor Club</title>
+  <meta name="description" content="SummitPulse Outdoor Club - hiking, trail running, climbing, event calendar, and route recommendations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root{
+      --bg:#0e1022;
+      --bg-soft:#171a34;
+      --card:#1d2145cc;
+      --card-solid:#1e2349;
+      --text:#f6f7fb;
+      --muted:#b7bdd7;
+      --accent:#ff7a18;
+      --accent-2:#8f5bff;
+      --accent-3:#29c7ff;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+      --radius:22px;
+      --radius-sm:16px;
+      --max:1200px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 10% 20%, rgba(143,91,255,.22), transparent 30%),
+        radial-gradient(circle at 90% 15%, rgba(41,199,255,.16), transparent 24%),
+        radial-gradient(circle at 80% 80%, rgba(255,122,24,.18), transparent 26%),
+        linear-gradient(145deg, #090b18 0%, #10132a 45%, #0e1022 100%);
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size:40px 40px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.25), rgba(0,0,0,0));
+      z-index:-1;
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .container{width:min(var(--max), calc(100% - 2rem));margin-inline:auto}
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      backdrop-filter:blur(14px);
+      background:rgba(10,12,28,.65);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:1rem 0;
+      gap:1rem;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:.85rem;
+      font-weight:800;
+      letter-spacing:.4px;
+    }
+    .brand-badge{
+      width:44px;height:44px;
+      display:grid;place-items:center;
+      border-radius:14px;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow:0 10px 30px rgba(143,91,255,.35);
+      font-size:1.15rem;
+    }
+    .brand span small{
+      display:block;
+      color:var(--muted);
+      font-size:.74rem;
+      font-weight:600;
+      margin-top:2px;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:.4rem;
+    }
+    .nav-links a{
+      color:var(--muted);
+      padding:.8rem 1rem;
+      border-radius:999px;
+      transition:.25s ease;
+      font-weight:600;
+      font-size:.95rem;
+    }
+    .nav-links a:hover,
+    .nav-links a.active{
+      color:var(--text);
+      background:rgba(255,255,255,.08);
+    }
+
+    .nav-cta{
+      display:flex;
+      align-items:center;
+      gap:.75rem;
+    }
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:.95rem 1.25rem;
+      font-weight:800;
+      transition:.25s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:.6rem;
+    }
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg, var(--accent), #ff4d6d);
+      box-shadow:0 10px 26px rgba(255,122,24,.25);
+    }
+    .btn-primary:hover{transform:translateY(-2px);filter:brightness(1.05)}
+    .btn-secondary{
+      color:var(--text);
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .btn-secondary:hover{background:rgba(255,255,255,.12)}
+    .menu-toggle{
+      display:none;
+      width:48px;height:48px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-size:1rem;
+    }
+
+    .hero{
+      position:relative;
+      padding:5.5rem 0 4rem;
+      overflow:hidden;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:2rem;
+      align-items:center;
+    }
+    .hero-copy h1{
+      font-size:clamp(2.5rem, 5vw, 5rem);
+      line-height:.97;
+      margin:0 0 1rem;
+      letter-spacing:-.04em;
+    }
+    .gradient-text{
+      background:linear-gradient(90deg, #ffffff 0%, #ffd1b0 20%, #ff7a18 50%, #8f5bff 80%, #29c7ff 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .hero-copy p{
+      max-width:640px;
+      color:var(--muted);
+      font-size:1.08rem;
+      line-height:1.75;
+      margin:0 0 1.7rem;
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.9rem;
+      margin-bottom:1.8rem;
+    }
+    .hero-stats{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(120px, 1fr));
+      gap:1rem;
+    }
+    .stat{
+      padding:1rem 1.1rem;
+      border-radius:18px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+    .stat strong{
+      display:block;
+      font-size:1.5rem;
+      margin-bottom:.2rem;
+    }
+    .stat span{
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .hero-visual{
+      position:relative;
+    }
+    .hero-card{
+      position:relative;
+      border-radius:30px;
+      overflow:hidden;
+      min-height:560px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.1);
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.46)),
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+    }
+    .floating-panel{
+      position:absolute;
+      background:rgba(14,16,34,.82);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
+      border-radius:20px;
+      padding:1rem 1rem;
+      animation:float 5s ease-in-out infinite;
+    }
+    .panel-top{
+      top:22px;
+      right:-18px;
+      width:220px;
+    }
+    .panel-bottom{
+      left:-24px;
+      bottom:24px;
+      width:250px;
+      animation-delay:1.2s;
+    }
+    .floating-panel h4{
+      margin:.15rem 0 .5rem;
+      font-size:1rem;
+    }
+    .floating-panel p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:.92rem;
+    }
+    .panel-icon{
+      width:40px;height:40px;
+      display:grid;place-items:center;
+      border-radius:12px;
+      margin-bottom:.6rem;
+      background:linear-gradient(135deg, var(--accent-2), var(--accent-3));
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-10px)}
+    }
+
+    .section{
+      padding:5rem 0;
+    }
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:end;
+      margin-bottom:1.8rem;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.45rem .8rem;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:#ffd8bf;
+      font-size:.85rem;
+      font-weight:700;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      margin-bottom:1rem;
+    }
+    .section h2{
+      margin:0;
+      font-size:clamp(1.9rem, 4vw, 3rem);
+      letter-spacing:-.03em;
+    }
+    .section-header p{
+      max-width:560px;
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+    }
+
+    .features-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:1.2rem;
+    }
+    .feature-card{
+      padding:1.4rem;
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      transition:.3s ease;
+    }
+    .feature-card:hover{
+      transform:translateY(-6px);
+      border-color:rgba(255,255,255,.18);
+    }
+    .feature-icon{
+      width:56px;height:56px;
+      border-radius:18px;
+      display:grid;place-items:center;
+      margin-bottom:1rem;
+      font-size:1.2rem;
+      background:linear-gradient(135deg, rgba(255,122,24,.16), rgba(143,91,255,.25));
+      color:#fff;
+    }
+    .feature-card h3{margin:.2rem 0 .5rem}
+    .feature-card p{
+      color:var(--muted);
+      line-height:1.7;
+      margin:0 0 1rem;
+    }
+    .feature-card ul{
+      list-style:none;
+      padding:0;margin:0;
+      display:grid;gap:.6rem;
+      color:#dfe4ff;
+      font-size:.95rem;
+    }
+    .feature-card li{
+      display:flex;align-items:center;gap:.6rem;
+    }
+    .feature-card li i{color:var(--accent)}
+
+    .calendar-wrap{
+      display:grid;
+      grid-template-columns:1fr .9fr;
+      gap:1.2rem;
+      align-items:start;
+    }
+    .calendar-card,.spotlight-card,.route-card,.gallery-card,.join-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .calendar-card{
+      padding:1.3rem;
+    }
+    .calendar-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:1rem;
+    }
+    .calendar-head h3{margin:0}
+    .calendar-head .month{
+      color:#ffd8bf;
+      font-weight:700;
+      padding:.55rem .85rem;
+      border-radius:999px;
+      background:rgba(255,122,24,.12);
+      border:1px solid rgba(255,122,24,.24);
+    }
+    .calendar-grid{
+      display:grid;
+      grid-template-columns:repeat(7, 1fr);
+      gap:.7rem;
+    }
+    .dow,.day{
+      text-align:center;
+      border-radius:16px;
+      padding:.8rem .35rem;
+      font-size:.92rem;
+    }
+    .dow{
+      color:var(--muted);
+      font-weight:700;
+      background:rgba(255,255,255,.03);
+    }
+    .day{
+      min-height:82px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.05);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      transition:.25s ease;
+    }
+    .day:hover{background:rgba(255,255,255,.08)}
+    .day span{
+      align-self:flex-start;
+      font-weight:800;
+      font-size:.88rem;
+      opacity:.92;
+    }
+    .day em{
+      font-style:normal;
+      font-size:.72rem;
+      color:#fff;
+      align-self:flex-start;
+      padding:.28rem .45rem;
+      border-radius:999px;
+      margin-top:.45rem;
+      background:linear-gradient(135deg, var(--accent-2), var(--accent-3));
+    }
+    .day.muted{
+      opacity:.35;
+    }
+    .day.event-orange em{background:linear-gradient(135deg, var(--accent), #ff4d6d)}
+    .day.event-blue em{background:linear-gradient(135deg, var(--accent-3), #4e7dff)}
+    .day.event-purple em{background:linear-gradient(135deg, var(--accent-2), #d56cff)}
+
+    .spotlight-card{
+      overflow:hidden;
+    }
+    .spotlight-image{
+      height:240px;
+      background:url('https://images.unsplash.com/photo-1517821365201-7734f463f1f0?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+    }
+    .spotlight-body{
+      padding:1.3rem;
+    }
+    .spotlight-body h3{
+      margin:.2rem 0 .55rem;
+    }
+    .spotlight-body p{
+      color:var(--muted);
+      line-height:1.75;
+      margin:0 0 1rem;
+    }
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.7rem;
+      margin-bottom:1rem;
+    }
+    .meta span{
+      display:inline-flex;
+      gap:.45rem;
+      align-items:center;
+      padding:.45rem .7rem;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      color:#e8ebff;
+      font-size:.85rem;
+      border:1px solid rgba(255,255,255,.07);
+    }
+
+    .routes-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:1.2rem;
+    }
+    .route-card{
+      overflow:hidden;
+      transition:.3s ease;
+    }
+    .route-card:hover{transform:translateY(-6px)}
+    .route-image{
+      height:240px;
+      position:relative;
+      overflow:hidden;
+    }
+    .route-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .6s ease;
+    }
+    .route-card:hover .route-image img{transform:scale(1.08)}
+    .route-badge{
+      position:absolute;
+      top:14px;
+      left:14px;
+      padding:.45rem .8rem;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:800;
+      background:rgba(14,16,34,.78);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(8px);
+    }
+    .route-body{
+      padding:1.2rem;
+    }
+    .route-body h3{
+      margin:.2rem 0 .4rem;
+    }
+    .route-body p{
+      margin:0 0 1rem;
+      color:var(--muted);
+      line-height:1.7;
+    }
+    .route-info{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:.6rem;
+      margin-bottom:1rem;
+    }
+    .route-info div{
+      padding:.7rem;
+      border-radius:14px;
+      background:rgba(255,255,255,.05);
+      text-align:center;
+    }
+    .route-info strong{
+      display:block;
+      font-size:1rem;
+    }
+    .route-info span{
+      color:var(--muted);
+      font-size:.78rem;
+    }
+
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:1.2rem;
+    }
+    .gallery-card{
+      overflow:hidden;
+      min-height:420px;
+      position:relative;
+    }
+    .gallery-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .gallery-overlay{
+      position:absolute;
+      inset:auto 0 0 0;
+      padding:1.4rem;
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,.72));
+    }
+    .gallery-overlay h3{margin:0 0 .4rem}
+    .gallery-overlay p{
+      margin:0;
+      color:#e8ebff;
+      line-height:1.6;
+      max-width:600px;
+    }
+    .mini-grid{
+      display:grid;
+      gap:1.2rem;
+    }
+    .mini{
+      min-height:204px;
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--radius);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+    .mini img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:saturate(1.08);
+    }
+    .mini .gallery-overlay{
+      padding:1rem;
+    }
+
+    .join-card{
+      padding:2rem;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:1.5rem;
+      align-items:center;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(41,199,255,.22), transparent 30%),
+        radial-gradient(circle at 15% 80%, rgba(255,122,24,.2), transparent 28%),
+        linear-gradient(135deg, rgba(143,91,255,.22), rgba(255,255,255,.04));
+    }
+    .join-copy h2{
+      margin:0 0 .8rem;
+      font-size:clamp(2rem, 4vw, 3rem);
+    }
+    .join-copy p{
+      color:var(--muted);
+      line-height:1.8;
+      margin:0 0 1.2rem;
+    }
+    .join-points{
+      display:grid;
+      gap:.8rem;
+      color:#eef2ff;
+    }
+    .join-points div{
+      display:flex;
+      gap:.8rem;
+      align-items:flex-start;
+      padding:.85rem 1rem;
+      border-radius:16px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .join-points i{
+      margin-top:.2rem;
+      color:#ffd8bf;
+    }
+    .join-form{
+      padding:1.1rem;
+      border-radius:24px;
+      background:rgba(8,10,24,.42);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(10px);
+    }
+    .join-form h3{margin:.2rem 0 1rem}
+    .input{
+      width:100%;
+      padding:1rem 1rem;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      outline:none;
+      margin-bottom:.9rem;
+      transition:.25s ease;
+    }
+    .input:focus{
+      border-color:rgba(255,122,24,.5);
+      box-shadow:0 0 0 4px rgba(255,122,24,.12);
+    }
+    .input::placeholder{color:#9ba4ca}
+
+    footer{
+      padding:2rem 0 3rem;
+    }
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:center;
+      flex-wrap:wrap;
+      padding-top:1.4rem;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+    }
+    .social{
+      display:flex;
+      gap:.7rem;
+    }
+    .social a{
+      width:42px;height:42px;
+      display:grid;place-items:center;
+      border-radius:14px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      transition:.25s ease;
+    }
+    .social a:hover{
+      transform:translateY(-2px);
+      color:#fff;
+      background:rgba(255,255,255,.1);
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(28px);
+      transition:opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform:none;
+    }
+
+    @media (max-width: 1024px){
+      .hero-grid,
+      .calendar-wrap,
+      .gallery-grid,
+      .join-card{
+        grid-template-columns:1fr;
+      }
+      .features-grid,
+      .routes-grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+      .hero-card{
+        min-height:480px;
+      }
+    }
+
+    @media (max-width: 760px){
+      .menu-toggle{display:grid;place-items:center}
+      .nav-links{
+        position:absolute;
+        top:100%;
+        left:0;right:0;
+        flex-direction:column;
+        align-items:stretch;
+        background:rgba(11,13,31,.96);
+        padding:.75rem 1rem 1rem;
+        border-bottom:1px solid var(--line);
+        display:none;
+      }
+      .nav-links.open{display:flex}
+      .nav-cta .btn-primary{display:none}
+      .hero{padding-top:4rem}
+      .hero-stats,
+      .features-grid,
+      .routes-grid{
+        grid-template-columns:1fr;
+      }
+      .calendar-grid{
+        gap:.45rem;
+      }
+      .day{
+        min-height:72px;
+        padding:.6rem .25rem;
+      }
+      .section-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .panel-top{
+        right:10px;
+        width:190px;
+      }
+      .panel-bottom{
+        left:10px;
+        width:210px;
+      }
+      .footer-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">
+        <div class="brand-badge"><i class="fa-solid fa-mountain-sun"></i></div>
+        <span>
+          SummitPulse
+          <small>Outdoor Adventure Club</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="active">Home</a>
+        <a href="#about">Club Life</a>
+        <a href="#calendar">Calendar</a>
+        <a href="#routes">Routes</a>
+        <a href="#gallery">Moments</a>
+        <a href="#join">Join</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="#join" class="btn btn-primary"><i class="fa-solid fa-compass"></i> Become a Member</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow"><i class="fa-solid fa-fire-flame-curved"></i> Move beyond the ordinary</div>
+          <h1>Chase the trail. <span class="gradient-text">Own the horizon.</span></h1>
+          <p>
+            SummitPulse is an outdoor sports club for hikers, climbers, trail runners, and weekend explorers.
+            Join guided trips, discover curated routes, train with experienced leaders, and turn every free day into a story worth telling.
+          </p>
+          <div class="hero-actions">
+            <a href="#calendar" class="btn btn-primary"><i class="fa-solid fa-calendar-days"></i> View Events</a>
+            <a href="#routes" class="btn btn-secondary"><i class="fa-solid fa-route"></i> Explore Routes</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>120+</strong>
+              <span>Club adventures each year</span>
+            </div>
+            <div class="stat">
+              <strong>38</strong>
+              <span>Signature routes mapped</span>
+            </div>
+            <div class="stat">
+              <strong>4.9/5</strong>
+              <span>Member experience rating</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+          <div class="hero-card"></div>
+          <div class="floating-panel panel-top">
+            <div class="panel-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h4>Weekend Sprint Trek</h4>
+            <p>Fast-paced mountain day trip with sunrise checkpoints and a guided descent workshop.</p>
+          </div>
+          <div class="floating-panel panel-bottom">
+            <div class="panel-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <h4>Route Ready</h4>
+            <p>Get distance, elevation, terrain notes, and difficulty levels before you lace up.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <div class="eyebrow"><i class="fa-solid fa-rocket"></i> Why SummitPulse</div>
+            <h2>A club built for momentum, community, and wild weekends</h2>
+          </div>
+          <p>
+            We combine expert planning with a bold social energy. Every event is designed to be safe, inspiring,
+            and rewarding—whether you are taking your first climb or pushing for your next endurance milestone.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <article class="feature-card reveal">
+            <div class="feature-icon"><i class="fa-solid fa-person-hiking"></i></div>
+            <h3>Guided Experiences</h3>
+            <p>Professionally organized hikes, trail runs, climbing meetups, and seasonal challenge days.</p>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> Certified trip leaders</li>
+              <li><i class="fa-solid fa-check"></i> Small group pacing</li>
+              <li><i class="fa-solid fa-check"></i> Safety-first route briefings</li>
+            </ul>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="feature-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h3>Curated Route Library</h3>
+            <p>Discover handpicked trails with practical details on terrain, timing, weather patterns, and viewpoints.</p>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> Difficulty breakdown</li>
+              <li><i class="fa-solid fa-check"></i> Elevation & distance notes</li>
+              <li><i class="fa-solid fa-check"></i> Best season recommendations</li>
+            </ul>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="feature-icon"><i class="fa-solid fa-people-group"></i></div>
+            <h3>Active Community</h3>
+            <p>Meet explorers, photographers, climbers, and runners who turn outdoor training into a shared ritual.</p>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> New member welcome rides</li>
+              <li><i class="fa-solid fa-check"></i> Skills workshops</li>
+              <li><i class="fa-solid fa-check"></i> Post-adventure socials</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="calendar">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <div class="eyebrow"><i class="fa-solid fa-calendar-week"></i> Activity Calendar</div>
+            <h2>Upcoming outdoor sessions and signature club events</h2>
+          </div>
+          <p>
+            Plan your next month with sunrise hikes, technical climbs, endurance runs, and weekend campouts.
+            Every event includes a short description so members can find the right pace and challenge level.
+          </p>
+        </div>
+
+        <div class="calendar-wrap">
+          <div class="calendar-card reveal">
+            <div class="calendar-head">
+              <h3>Adventure Month</h3>
+              <div class="month">October 2025</div>
+            </div>
+            <div class="calendar-grid">
+              <div class="dow">Mon</div>
+              <div class="dow">Tue</div>
+              <div class="dow">Wed</div>
+              <div class="dow">Thu</div>
+              <div class="dow">Fri</div>
+              <div class="dow">Sat</div>
+              <div class="dow">Sun</div>
+
+              <div class="day muted"><span>29</span></div>
+              <div class="day muted"><span>30</span></div>
+              <div class="day"><span>1</span></div>
+              <div class="day"><span>2</span></div>
+              <div class="day event-orange"><span>3</span><em>Night Run</em></div>
+              <div class="day"><span>4</span></div>
+              <div class="day event-blue"><span>5</span><em>Sunrise Hike</em></div>
+
+              <div class="day"><span>6</span></div>
+              <div class="day"><span>7</span></div>
+              <div class="day event-purple"><span>8</span><em>Climb Clinic</em></div>
+              <div class="day"><span>9</span></div>
+              <div class="day"><span>10</span></div>
+              <div class="day event-orange"><span>11</span><em>Ridge Trek</em></div>
+              <div class="day"><span>12</span></div>
+
+              <div class="day"><span>13</span></div>
+              <div class="day"><span>14</span></div>
+              <div class="day"><span>15</span></div>
+              <div class="day event-blue"><span>16</span><em>Trail Skills</em></div>
+              <div class="day"><span>17</span></div>
+              <div class="day"><span>18</span></div>
+              <div class="day event-purple"><span>19</span><em>Camp Night</em></div>
+
+              <div class="day"><span>20</span></div>
+              <div class="day event-orange"><span>21</span><em>Hill Repeats</em></div>
+              <div class="day"><span>22</span></div>
+              <div class="day"><span>23</span></div>
+              <div class="day"><span>24</span></div>
+              <div class="day event-blue"><span>25</span><em>Coastal Trek</em></div>
+              <div class="day"><span>26</span></div>
+
+              <div class="day"><span>27</span></div>
+              <div class="day"><span>28</span></div>
+              <div class="day event-purple"><span>29</span><em>Rope Session</em></div>
+              <div class="day"><span>30</span></div>
+              <div class="day event-orange"><span>31</span><em>Moonlight Walk</em></div>
+              <div class="day muted"><span>1</span></div>
+              <div class="day muted"><span>2</span></div>
+            </div>
+          </div>
+
+          <aside class="spotlight-card reveal">
+            <div class="spotlight-image"></div>
+            <div class="spotlight-body">
+              <div class="eyebrow"><i class="fa-solid fa-star"></i> Featured Event</div>
+              <h3>Volcanic Ridge Traverse</h3>
+              <p>
+                A dramatic full-day route with rocky ascents, panoramic viewpoints, and a guided pace split for intermediate and advanced members.
+              </p>
+              <div class="meta">
+                <span><i class="fa-solid fa-route"></i> 18 km</span>
+                <span><i class="fa-solid fa-mountain"></i> +980 m</span>
+                <span><i class="fa-solid fa-gauge-high"></i> Intermediate+</span>
+              </div>
+              <a href="#join" class="btn btn-primary"><i class="fa-solid fa-ticket"></i> Reserve a Spot</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="routes">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <div class="eyebrow"><i class="fa-solid fa-route"></i> Route Recommendations</div>
+            <h2>Three club-approved routes for every kind of explorer</h2>
+          </div>
+          <p>
+            From quick summit escapes to all-day epics, these recommendations are popular with our members for their scenery,
+            flow, and training value. Pick a route that matches your weekend energy.
+          </p>
+        </div>
+
+        <div class="routes-grid">
+          <article class="route-card reveal">
+            <div class="route-image">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Mountain route" />
+              <div class="route-badge">Best for Hikers</div>
+            </div>
+            <div class="route-body">
+              <h3>Crimson Peak Loop</h3>
+              <p>
+                A high-reward alpine circuit with exposed ridge views, clean switchbacks, and a spectacular final overlook.
+              </p>
+              <div class="route-info">
+                <div><strong>12 km</strong><span>Distance</span></div>
+                <div><strong>760 m</strong><span>Elevation</span></div>
+                <div><strong>4 hrs</strong><span>Duration</span></div>
+              </div>
+              <a href="#join" class="btn btn-secondary"><i class="fa-solid fa-arrow-right"></i> Save Route</a>
+            </div>
+          </article>
+
+          <article class="route-card reveal">
+            <div class="route-image">
+              <img src="https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=1200&q=80" alt="Coastal trail route" />
+              <div class="route-badge">Best for Trail Runners</div>
+            </div>
+            <div class="route-body">
+              <h3>Blue Ember Coastline</h3>
+              <p>
+                Fast rolling terrain with cliffside scenery, windy sprints, and enough technical sections to keep the legs honest.
+              </p>
+              <div class="route-info">
+                <div><strong>16 km</strong><span>Distance</span></div>
+                <div><strong>420 m</strong><span>Elevation</span></div>
+                <div><strong>2.5 hrs</strong><span>Duration</span></div>
+              </div>
+              <a href="#join" class="btn btn-secondary"><i class="fa-solid fa-arrow-right"></i> Save Route</a>
+            </div>
+          </article>
+
+          <article class="route-card reveal">
+            <div class="route-image">
+              <img src="https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=1200&q=80" alt="Rock climbing route" />
+              <div class="route-badge">Best for Climbers</div>
+            </div>
+            <div class="route-body">
+              <h3>Twilight Wall Approach</h3>
+              <p>
+                A scenic approach trail leading to beginner-friendly sport lines and a warm rock face that catches evening light.
+              </p>
+              <div class="route-info">
+                <div><strong>5 km</strong><span>Approach</span></div>
+                <div><strong>320 m</strong><span>Gain</span></div>
+                <div><strong>Half Day</strong><span>Plan</span></div>
+              </div>
+              <a href="#join" class="btn btn-secondary"><i class="fa-solid fa-arrow-right"></i> Save Route</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gallery">
+      <div class="container">
+        <div class="section-header reveal">
+          <div>
+            <div class="eyebrow"><i class="fa-solid fa-camera-retro"></i> Club Moments</div>
+            <h2>The energy of the trail, the climb, and the people beside you</h2>
+          </div>
+          <p>
+            Great outdoor clubs are made of shared effort, unforgettable weather, summit laughter, and the quiet minutes before sunrise.
+            Here is a glimpse into our atmosphere.
+          </p>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-card reveal">
+            <img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=80" alt="Outdoor club team" />
+            <div class="gallery-overlay">
+              <h3>Weekend Expedition Culture</h3>
+              <p>We train hard, move smart, and celebrate every finish line—from first-time hikes to high-output endurance days.</p>
+            </div>
+          </div>
+
+          <div class="mini-grid">
+            <div class="mini reveal">
+              <img src="https://images.unsplash.com/photo-1517164850305-99a3e65bb47e?auto=format&fit=crop&w=1200&q=80" alt="Trail running" />
+              <div class="gallery-overlay">
+                <h3>Trail Flow</h3>
+              </div>
+            </div>
+            <div class="mini reveal">
+              <img src="https://images.unsplash.com/photo-1519904981063-b0cf448d479e?auto=format&fit=crop&w=1200&q=80" alt="Mountain camp" />
+              <div class="gallery-overlay">
+                <h3>Campfire Nights</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="join">
+      <div class="container">
+        <div class="join-card reveal">
+          <div class="join-copy">
+            <div class="eyebrow"><i class="fa-solid fa-user-plus"></i> Join the Club</div>
+            <h2>Ready to trade routine for altitude, motion, and unforgettable weekends?</h2>
+            <p>
+              Whether you are a beginner looking for structure or an experienced athlete chasing stronger terrain,
+              SummitPulse gives you a community, event calendar, and route guidance to keep momentum high.
+            </p>
+            <div class="join-points">
+              <div><i class="fa-solid fa-check-circle"></i><span>Weekly events across hiking, trail running, climbing, and campouts</span></div>
+              <div><i class="fa-solid fa-check-circle"></i><span>Route recommendations with practical planning info and difficulty notes</span></div>
+              <div><i class="fa-solid fa-check-circle"></i><span>A welcoming social club with real outdoor ambition</span></div>
+            </div>
+          </div>
+
+          <form class="join-form">
+            <h3>Request Membership Info</h3>
+            <input class="input" type="text" placeholder="Your name" />
+            <input class="input" type="email" placeholder="Email address" />
+            <input class="input" type="text" placeholder="Favorite activity: hiking, running, climbing..." />
+            <button type="button" class="btn btn-primary" style="width:100%;justify-content:center;">
+              <i class="fa-solid fa-paper-plane"></i> Send Request
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <strong style="color:#fff;">SummitPulse Outdoor Club</strong><br>
+          Explore farther. Move smarter. Meet your people.
+        </div>
+        <div class="social">
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#"><i class="fa-brands fa-strava"></i></a>
+          <a href="#"><i class="fa-brands fa-discord"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const links = navLinks.querySelectorAll('a');
+    const sections = document.querySelectorAll('main section[id]');
+    const reveals = document.querySelectorAll('.reveal');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      menuToggle.innerHTML = navLinks.classList.contains('open')
+        ? '<i class="fa-solid fa-xmark"></i>'
+        : '<i class="fa-solid fa-bars"></i>';
+    });
+
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        links.forEach(item => item.classList.remove('active'));
+        link.classList.add('active');
+        navLinks.classList.remove('open');
+        menuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+      });
+    });
+
+    function setActiveNav() {
+      let current = '';
+      sections.forEach(section => {
+        const top = window.scrollY;
+        const offset = section.offsetTop - 140;
+        const height = section.offsetHeight;
+        if (top >= offset && top < offset + height) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      links.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }
+
+    function revealOnScroll() {
+      const trigger = window.innerHeight * 0.88;
+      reveals.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < trigger) {
+          el.classList.add('visible');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', () => {
+      setActiveNav();
+      revealOnScroll();
+    });
+
+    window.addEventListener('load', () => {
+      setActiveNav();
+      revealOnScroll();
+    });
+  </script>
+</body>
+</html>
